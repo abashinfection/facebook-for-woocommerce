@@ -43,6 +43,7 @@ class Lifecycle extends Framework\Plugin\Lifecycle {
 			'2.0.3',
 			'2.0.4',
 			'2.3.3',
+			'2.3.4',
 		];
 	}
 
@@ -348,6 +349,16 @@ class Lifecycle extends Framework\Plugin\Lifecycle {
 			return;
 		}
 		facebook_for_woocommerce()->get_products_sync_handler()->create_or_update_all_products();
+	}
+
+	/**
+	 * Upgrades to version 2.3.4
+	 *
+	 * @since 2.3.4.
+	 */
+	protected function upgrade_to_2_3_4() {
+		delete_option( 'wc_facebook_google_product_categories' );
+		delete_transient( 'wc_facebook_google_product_categories' );
 	}
 
 }
