@@ -91,12 +91,25 @@ if ( ! class_exists( 'WC_Facebookcommerce_Utils' ) ) :
 		 * @return string
 		 */
 		public static function get_fb_retailer_id( $woo_product ) {
-			$woo_id = $woo_product->get_id();
-
 			// Call $woo_product->get_id() instead of ->id to account for Variable
 			// products, which have their own variant_ids.
-			return $woo_product->get_sku() ? $woo_product->get_sku() . '_' .
-			$woo_id : self::FB_RETAILER_ID_PREFIX . $woo_id;
+			$woo_id = $woo_product->get_id();
+
+			// Build Product ID based on user settings
+			switch ( facebook_for_woocommerce()->get_integration()->get_product_id_mode() ) {
+				case \WC_Facebookcommerce_Integration::PRODUCT_ID_MODE_WC:
+					return self::FB_RETAILER_ID_PREFIX . $woo_id;
+				case \WC_Facebookcommerce_Integration::PRODUCT_ID_MODE_SKU:
+					return $woo_product->get_sku() ? $woo_product->get_sku()
+					: self::FB_RETAILER_ID_PREFIX . $woo_id;
+				case \WC_Facebookcommerce_Integration::PRODUCT_ID_MODE_SKU_WC:
+					return $woo_product->get_sku() ? $woo_product->get_sku() . '_' .
+					$woo_id : self::FB_RETAILER_ID_PREFIX . $woo_id;
+				default:
+					// Same as self::PRODUCT_ID_MODE_SKU_WC
+					return $woo_product->get_sku() ? $woo_product->get_sku() . '_' .
+					$woo_id : self::FB_RETAILER_ID_PREFIX . $woo_id;
+			}
 		}
 
 		/**

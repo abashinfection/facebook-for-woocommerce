@@ -74,6 +74,9 @@ class WC_Facebookcommerce_Integration extends WC_Integration {
 	/** @var string the "enable product sync" setting ID */
 	const SETTING_ENABLE_PRODUCT_SYNC = 'wc_facebook_enable_product_sync';
 
+	/** @var string the product ID mode setting ID */
+	const SETTING_PRODUCT_ID_MODE = 'wc_facebook_product_id_mode';
+
 	/** @var string the excluded product category IDs setting ID */
 	const SETTING_EXCLUDED_PRODUCT_CATEGORY_IDS = 'wc_facebook_excluded_product_category_ids';
 
@@ -106,6 +109,15 @@ class WC_Facebookcommerce_Integration extends WC_Integration {
 
 	/** @var string the short product description mode name */
 	const PRODUCT_DESCRIPTION_MODE_SHORT = 'short';
+
+	/** @var string the SKU-only product ID mode name */
+	const PRODUCT_ID_MODE_SKU = 'SKU';
+
+	/** @var string the WC-only product ID mode name */
+	const PRODUCT_ID_MODE_WC = 'WC';
+
+	/** @var string the SKU+WC product ID mode name */
+	const PRODUCT_ID_MODE_SKU_WC = 'SKU_WC';
 
 	/** @var string the hook for the recurreing action that syncs products */
 	const ACTION_HOOK_SCHEDULED_RESYNC = 'sync_all_fb_products_using_feed';
@@ -2891,6 +2903,39 @@ class WC_Facebookcommerce_Integration extends WC_Integration {
 
 		if ( ! in_array( $mode, $valid_modes, true ) ) {
 			$mode = self::PRODUCT_DESCRIPTION_MODE_STANDARD;
+		}
+
+		return $mode;
+	}
+
+
+	/**
+	 * Gets the configured product ID mode.
+	 *
+	 * @since 1.10.0
+	 *
+	 * @return string
+	 */
+	public function get_product_id_mode() {
+
+		/**
+		 * Filters the configured product ID mode.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param string $mode the configured product id mode
+		 * @param \WC_Facebookcommerce_Integration $integration the integration instance
+		 */
+		$mode = (string) apply_filters( 'wc_facebook_product_id_mode', get_option( self::SETTING_PRODUCT_ID_MODE, self::PRODUCT_ID_MODE_SKU_WC ), $this );
+
+		$valid_modes = array(
+			self::PRODUCT_ID_MODE_SKU_WC,
+			self::PRODUCT_ID_MODE_SKU,
+			self::PRODUCT_ID_MODE_WC,
+		);
+
+		if ( ! in_array( $mode, $valid_modes, true ) ) {
+			$mode = self::PRODUCT_ID_MODE_SKU_WC;
 		}
 
 		return $mode;

@@ -293,6 +293,20 @@ class Product_Sync extends Admin\Abstract_Settings_Screen {
 			),
 
 			array(
+				'id'       => \WC_Facebookcommerce_Integration::SETTING_PRODUCT_ID_MODE,
+				'title'    => __( 'Product identifier', 'facebook-for-woocommerce' ),
+				'type'     => 'select',
+				'class'    => 'product-sync-field',
+				'desc_tip' => __( 'Choose which product ID to use in the Facebook catalog.', 'facebook-for-woocommerce' ),
+				'default'  => \WC_Facebookcommerce_Integration::PRODUCT_ID_MODE_SKU_WC,
+				'options'  => array(
+					\WC_Facebookcommerce_Integration::PRODUCT_ID_MODE_SKU_WC => __( 'SKU + Product ID', 'facebook-for-woocommerce' ),
+					\WC_Facebookcommerce_Integration::PRODUCT_ID_MODE_SKU => __( 'SKU', 'facebook-for-woocommerce' ),
+					\WC_Facebookcommerce_Integration::PRODUCT_ID_MODE_WC => __( 'Product ID', 'facebook-for-woocommerce' ),
+				),
+			),
+
+			array(
 				'id'                => \WC_Facebookcommerce_Integration::SETTING_EXCLUDED_PRODUCT_CATEGORY_IDS,
 				'title'             => __( 'Exclude categories from sync', 'facebook-for-woocommerce' ),
 				'type'              => 'multiselect',
@@ -332,6 +346,7 @@ class Product_Sync extends Admin\Abstract_Settings_Screen {
 					\WC_Facebookcommerce_Integration::PRODUCT_DESCRIPTION_MODE_SHORT    => __( 'Short description', 'facebook-for-woocommerce' ),
 				),
 			),
+
 			array(
 				'id'       => \SkyVerge\WooCommerce\Facebook\Commerce::OPTION_GOOGLE_PRODUCT_CATEGORY_ID,
 				'type'     => 'product_sync_google_product_categories',
